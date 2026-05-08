@@ -17,6 +17,8 @@ public class PlayerController : MonoBehaviour
     private float xRotation;
     private float lastDashTime;
 
+    [SerializeField] private WeaponSystem weapon;
+
     void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -29,7 +31,13 @@ public class PlayerController : MonoBehaviour
         Jump();
         Move();
         Gravity();
+
         Dash();
+        if (Input.GetMouseButtonDown(0))
+        {
+            weapon.Shoot();
+        }
+        Finisher();
     }
 
     void Move()
@@ -77,8 +85,23 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.LeftShift) && Time.time > lastDashTime + dashCooldown)
         {
+            bool success = RhythmManager.Instance.TryHit(BeatAction.Dash);
+
+            //faire si perfect, good ou miss
+
             controller.Move(transform.forward * dashForce * Time.deltaTime);
             lastDashTime = Time.time;
+        }
+    }
+
+    void Finisher()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            bool success = RhythmManager.Instance.TryHit(BeatAction.Finisher);
+
+            //faire si perfect, good ou miss
+            //faire logique Finisher (ex: AOE autour du joueur, dégâts multipliés, etc.)
         }
     }
 }

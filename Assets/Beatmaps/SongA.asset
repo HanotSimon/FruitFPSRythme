@@ -1,0 +1,80 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bff7ec6a370d4fdc99facbc9c5fbaf8, type: 3}
+  m_Name: SongA
+  m_EditorClassIdentifier: Assembly-CSharp::BeatmapData
+  musicClip: {fileID: 8300000, guid: da54290e1b653ce9cb064055aafabfc2, type: 3}
+  bpm: 120
+  musicOffset: 0
+  perfectWindow: 0.5
+  goodWindow: 0.75
+  beatEvents:
+  - time: 0.215224
+    action: 0
+    hit: 0
+  - time: 1.199107
+    action: 0
+    hit: 0
+  - time: 2.204359
+    action: 0
+    hit: 0
+  - time: 2.723302
+    action: 0
+    hit: 0
+  - time: 3.212395
+    action: 0
+    hit: 0
+  - time: 3.714086
+    action: 0
+    hit: 0
+  - time: 3.97623
+    action: 1
+    hit: 0
+  - time: 4.696042
+    action: 0
+    hit: 0
+  - time: 5.685255
+    action: 0
+    hit: 0
+  - time: 6.65658
+    action: 0
+    hit: 0
+  - time: 7.663522
+    action: 0
+    hit: 0
+  - time: 8.693524
+    action: 0
+    hit: 0
+  - time: 9.662033
+    action: 0
+    hit: 0
+  - time: 10.676662
+    action: 0
+    hit: 0
+  - time: 11.868082
+    action: 1
+    hit: 0
+  - time: 13.605249
+    action: 0
+    hit: 0
+  - time: 14.635251
+    action: 0
+    hit: 0
+  - time: 15.580701
+    action: 0
+    hit: 0
+  - time: 16.695255
+    action: 0
+    hit: 0
+  - time: 17.902048
+    action: 0
+    hit: 0

@@ -1,0 +1,200 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bff7ec6a370d4fdc99facbc9c5fbaf8, type: 3}
+  m_Name: SongB
+  m_EditorClassIdentifier: Assembly-CSharp::BeatmapData
+  musicClip: {fileID: 8300000, guid: 75906f00eeb9eb394ad1313c4f5d5069, type: 3}
+  bpm: 120
+  musicOffset: 0
+  perfectWindow: 0.08
+  goodWindow: 0.15
+  beatEvents:
+  - time: 0.5
+    action: 0
+    hit: 0
+  - time: 1
+    action: 0
+    hit: 0
+  - time: 1.5
+    action: 0
+    hit: 0
+  - time: 2
+    action: 1
+    hit: 0
+  - time: 2.5
+    action: 0
+    hit: 0
+  - time: 3
+    action: 0
+    hit: 0
+  - time: 3.5
+    action: 2
+    hit: 0
+  - time: 4
+    action: 0
+    hit: 0
+  - time: 4.5
+    action: 1
+    hit: 0
+  - time: 5
+    action: 0
+    hit: 0
+  - time: 5.5
+    action: 0
+    hit: 0
+  - time: 6
+    action: 2
+    hit: 0
+  - time: 6.5
+    action: 0
+    hit: 0
+  - time: 7
+    action: 1
+    hit: 0
+  - time: 7.5
+    action: 0
+    hit: 0
+  - time: 8
+    action: 0
+    hit: 0
+  - time: 8.5
+    action: 2
+    hit: 0
+  - time: 9
+    action: 0
+    hit: 0
+  - time: 9.5
+    action: 1
+    hit: 0
+  - time: 10
+    action: 0
+    hit: 0
+  - time: 10.5
+    action: 0
+    hit: 0
+  - time: 11
+    action: 2
+    hit: 0
+  - time: 11.5
+    action: 0
+    hit: 0
+  - time: 12
+    action: 1
+    hit: 0
+  - time: 12.5
+    action: 0
+    hit: 0
+  - time: 13
+    action: 0
+    hit: 0
+  - time: 13.5
+    action: 2
+    hit: 0
+  - time: 14
+    action: 0
+    hit: 0
+  - time: 14.5
+    action: 1
+    hit: 0
+  - time: 15
+    action: 0
+    hit: 0
+  - time: 15.5
+    action: 0
+    hit: 0
+  - time: 16
+    action: 2
+    hit: 0
+  - time: 16.5
+    action: 0
+    hit: 0
+  - time: 17
+    action: 1
+    hit: 0
+  - time: 17.5
+    action: 0
+    hit: 0
+  - time: 18
+    action: 0
+    hit: 0
+  - time: 18.5
+    action: 2
+    hit: 0
+  - time: 19
+    action: 0
+    hit: 0
+  - time: 19.5
+    action: 1
+    hit: 0
+  - time: 20
+    action: 0
+    hit: 0
+  - time: 20.5
+    action: 0
+    hit: 0
+  - time: 21
+    action: 2
+    hit: 0
+  - time: 21.5
+    action: 0
+    hit: 0
+  - time: 22
+    action: 1
+    hit: 0
+  - time: 22.5
+    action: 0
+    hit: 0
+  - time: 23
+    action: 0
+    hit: 0
+  - time: 23.5
+    action: 2
+    hit: 0
+  - time: 24
+    action: 0
+    hit: 0
+  - time: 24.5
+    action: 1
+    hit: 0
+  - time: 25
+    action: 0
+    hit: 0
+  - time: 25.5
+    action: 0
+    hit: 0
+  - time: 26
+    action: 2
+    hit: 0
+  - time: 26.5
+    action: 0
+    hit: 0
+  - time: 27
+    action: 1
+    hit: 0
+  - time: 27.5
+    action: 0
+    hit: 0
+  - time: 28
+    action: 0
+    hit: 0
+  - time: 28.5
+    action: 2
+    hit: 0
+  - time: 29
+    action: 0
+    hit: 0
+  - time: 29.5
+    action: 1
+    hit: 0
+  - time: 30
+    action: 0
+    hit: 0
