@@ -1,3 +1,4 @@
+// BeatmapRenderer.cs
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -9,21 +10,53 @@ public class BeatmapRenderer : MonoBehaviour
     public RectTransform hitLine;
     public float pixelsPerSecond = 400f;
 
+    [Tooltip("Combien de secondes avant le beat on spawne le visuel")]
+    public float spawnWindow = 2f;
+
+    private int nextSpawnIndex = 0;
     private List<GameObject> toDestroy = new List<GameObject>();
 
     private void Start()
     {
         BeatUI.hitBeats.Clear();
-        SpawnBeats();
     }
 
-    void SpawnBeats()
+    private void Update()
     {
-        for (int i = 0; i < beatmap.beatEvents.Count; i++)
+        double songTime = RhythmManager.Instance.GetSongTime();
+
+        SpawnUpcoming(songTime);
+        MoveAndCleanBeats(songTime);
+    }
+
+    // ── Spawn progressif ──────────────────────────────────────────────────────
+
+    void SpawnUpcoming(double songTime)
+    {
+        while (nextSpawnIndex < beatmap.beatEvents.Count)
         {
-            CreateBeatUI(beatmap.beatEvents[i], -800f, i);
-            CreateBeatUI(beatmap.beatEvents[i], +800f, i);
+            BeatEvent beat = beatmap.beatEvents[nextSpawnIndex];
+
+            // Pas encore dans la fenêtre → arrêter (les suivants sont encore plus loin)
+            if (beat.time - songTime > spawnWindow)
+                break;
+
+            // Déjà passé (songTime avancé, ex: seek) → skip silencieux
+            if (beat.time - songTime < -1f)
+            {
+                nextSpawnIndex++;
+                continue;
+            }
+
+            CreateBeatPair(beat, nextSpawnIndex);
+            nextSpawnIndex++;
         }
+    }
+
+    void CreateBeatPair(BeatEvent beat, int index)
+    {
+        CreateBeatUI(beat, -800f, index);
+        CreateBeatUI(beat, +800f, index);
     }
 
     void CreateBeatUI(BeatEvent beat, float startX, int index)
@@ -32,25 +65,27 @@ public class BeatmapRenderer : MonoBehaviour
         BeatUI ui = obj.GetComponent<BeatUI>();
         RectTransform rt = obj.GetComponent<RectTransform>();
 
-        ui.beatTime = beat.time;
-        ui.action = beat.action;
+        ui.beatTime  = beat.time;
+        ui.action    = beat.action;
         ui.beatIndex = index;
-        ui.startX = startX;
+        ui.startX    = startX;
+
         rt.anchoredPosition = new Vector2(startX, 0);
 
-        var img = obj.GetComponent<UnityEngine.UI.Image>();
+        var img = obj.transform.Find("Image").GetComponent<UnityEngine.UI.Image>();
         img.color = beat.action switch
         {
-            BeatAction.Shoot => Color.red,
-            BeatAction.Dash => Color.cyan,
+            BeatAction.Shoot    => Color.red,
+            BeatAction.Dash     => Color.cyan,
             BeatAction.Finisher => Color.yellow,
-            _ => Color.white
+            _                   => Color.white
         };
     }
 
-    private void Update()
+    // ── Mouvement + nettoyage ─────────────────────────────────────────────────
+
+    void MoveAndCleanBeats(double songTime)
     {
-        double songTime = RhythmManager.Instance.GetSongTime();
         toDestroy.Clear();
 
         foreach (Transform child in container)
@@ -61,12 +96,12 @@ public class BeatmapRenderer : MonoBehaviour
             RectTransform rt = child.GetComponent<RectTransform>();
             float timeToBeat = ui.beatTime - (float)songTime;
 
+            // Direction fixe depuis le spawn
             float direction = ui.startX < 0f ? 1f : -1f;
-            float x = direction * timeToBeat * pixelsPerSecond;
-            rt.anchoredPosition = new Vector2(x, 0);
+            rt.anchoredPosition = new Vector2(direction * timeToBeat * pixelsPerSecond, 0);
 
             bool atCenter = Mathf.Abs(timeToBeat) < 0.05f;
-            bool tooLate = timeToBeat < -1f;
+            bool tooLate  = timeToBeat < -1f;
 
             if ((atCenter || tooLate) && ui.TryMarkDestroyed())
                 toDestroy.Add(child.gameObject);
@@ -75,6 +110,8 @@ public class BeatmapRenderer : MonoBehaviour
         foreach (var go in toDestroy)
             Destroy(go);
     }
+
+    // ── Hit joueur ────────────────────────────────────────────────────────────
 
     public void OnPlayerHit(float hitThreshold)
     {
@@ -94,7 +131,6 @@ public class BeatmapRenderer : MonoBehaviour
             {
                 BeatUI.hitBeats.Add(ui.beatIndex);
                 toDestroy.Add(child.gameObject);
-                // scorer ici ou envoyer un event
             }
         }
 
