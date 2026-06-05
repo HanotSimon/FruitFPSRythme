@@ -1,76 +1,104 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class BeatmapRenderer : MonoBehaviour
 {
     public BeatmapData beatmap;
-
     public GameObject beatPrefab;
     public RectTransform container;
-
     public RectTransform hitLine;
-
     public float pixelsPerSecond = 400f;
 
-    private float centerX;
+    private List<GameObject> toDestroy = new List<GameObject>();
 
     private void Start()
     {
-        centerX = hitLine.anchoredPosition.x;
+        BeatUI.hitBeats.Clear();
         SpawnBeats();
     }
 
     void SpawnBeats()
     {
-        foreach (var beat in beatmap.beatEvents)
+        for (int i = 0; i < beatmap.beatEvents.Count; i++)
         {
-            GameObject obj = Instantiate(beatPrefab, container);
-
-            BeatUI ui = obj.GetComponent<BeatUI>();
-            ui.beatTime = beat.time;
-            ui.action = beat.action;
-
-            RectTransform rt = obj.GetComponent<RectTransform>();
-
-            rt.anchoredPosition = new Vector2(
-                -800,
-                0
-            );
-
-            var img = obj.GetComponent<UnityEngine.UI.Image>();
-
-            if (beat.action == BeatAction.Shoot)
-                img.color = Color.red;
-
-            if (beat.action == BeatAction.Dash)
-                img.color = Color.cyan;
-
-            if (beat.action == BeatAction.Finisher)
-                img.color = Color.yellow;
+            CreateBeatUI(beatmap.beatEvents[i], -800f, i);
+            CreateBeatUI(beatmap.beatEvents[i], +800f, i);
         }
+    }
+
+    void CreateBeatUI(BeatEvent beat, float startX, int index)
+    {
+        GameObject obj = Instantiate(beatPrefab, container);
+        BeatUI ui = obj.GetComponent<BeatUI>();
+        RectTransform rt = obj.GetComponent<RectTransform>();
+
+        ui.beatTime = beat.time;
+        ui.action = beat.action;
+        ui.beatIndex = index;
+        ui.startX = startX;
+        rt.anchoredPosition = new Vector2(startX, 0);
+
+        var img = obj.GetComponent<UnityEngine.UI.Image>();
+        img.color = beat.action switch
+        {
+            BeatAction.Shoot => Color.red,
+            BeatAction.Dash => Color.cyan,
+            BeatAction.Finisher => Color.yellow,
+            _ => Color.white
+        };
     }
 
     private void Update()
     {
         double songTime = RhythmManager.Instance.GetSongTime();
+        toDestroy.Clear();
 
         foreach (Transform child in container)
         {
             BeatUI ui = child.GetComponent<BeatUI>();
+            if (ui == null) continue;
+
             RectTransform rt = child.GetComponent<RectTransform>();
+            float timeToBeat = ui.beatTime - (float)songTime;
+
+            float direction = ui.startX < 0f ? 1f : -1f;
+            float x = direction * timeToBeat * pixelsPerSecond;
+            rt.anchoredPosition = new Vector2(x, 0);
+
+            bool atCenter = Mathf.Abs(timeToBeat) < 0.05f;
+            bool tooLate = timeToBeat < -1f;
+
+            if ((atCenter || tooLate) && ui.TryMarkDestroyed())
+                toDestroy.Add(child.gameObject);
+        }
+
+        foreach (var go in toDestroy)
+            Destroy(go);
+    }
+
+    public void OnPlayerHit(float hitThreshold)
+    {
+        double songTime = RhythmManager.Instance.GetSongTime();
+        toDestroy.Clear();
+
+        foreach (Transform child in container)
+        {
+            BeatUI ui = child.GetComponent<BeatUI>();
+            if (ui == null) continue;
 
             float timeToBeat = ui.beatTime - (float)songTime;
 
-            float x = timeToBeat * pixelsPerSecond;
-
-            rt.anchoredPosition = new Vector2(
-                x,
-                0
-            );
-
-            if (timeToBeat < -1f)
+            if (Mathf.Abs(timeToBeat) < hitThreshold
+                && !BeatUI.hitBeats.Contains(ui.beatIndex)
+                && ui.TryMarkDestroyed())
             {
-                Destroy(child.gameObject);
+                BeatUI.hitBeats.Add(ui.beatIndex);
+                toDestroy.Add(child.gameObject);
+                // scorer ici ou envoyer un event
             }
         }
+
+        foreach (var go in toDestroy)
+            Destroy(go);
     }
 }
