@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public class BeatmapRenderer : MonoBehaviour
 {
-    public BeatmapData beatmap;
     public GameObject beatPrefab;
     public RectTransform container;
     public RectTransform hitLine;
@@ -23,25 +22,24 @@ public class BeatmapRenderer : MonoBehaviour
 
     private void Update()
     {
+        var beatmap = RhythmManager.Instance.beatmap;
         double songTime = RhythmManager.Instance.GetSongTime();
 
-        SpawnUpcoming(songTime);
+        if (beatmap == null) return;
+
+        SpawnUpcoming(beatmap, songTime);
         MoveAndCleanBeats(songTime);
     }
 
-    // ── Spawn progressif ──────────────────────────────────────────────────────
-
-    void SpawnUpcoming(double songTime)
+    void SpawnUpcoming(BeatmapData beatmap, double songTime)
     {
         while (nextSpawnIndex < beatmap.beatEvents.Count)
         {
             BeatEvent beat = beatmap.beatEvents[nextSpawnIndex];
 
-            // Pas encore dans la fenêtre → arrêter (les suivants sont encore plus loin)
             if (beat.time - songTime > spawnWindow)
                 break;
 
-            // Déjà passé (songTime avancé, ex: seek) → skip silencieux
             if (beat.time - songTime < -1f)
             {
                 nextSpawnIndex++;
@@ -82,8 +80,6 @@ public class BeatmapRenderer : MonoBehaviour
         };
     }
 
-    // ── Mouvement + nettoyage ─────────────────────────────────────────────────
-
     void MoveAndCleanBeats(double songTime)
     {
         toDestroy.Clear();
@@ -96,7 +92,6 @@ public class BeatmapRenderer : MonoBehaviour
             RectTransform rt = child.GetComponent<RectTransform>();
             float timeToBeat = ui.beatTime - (float)songTime;
 
-            // Direction fixe depuis le spawn
             float direction = ui.startX < 0f ? 1f : -1f;
             rt.anchoredPosition = new Vector2(direction * timeToBeat * pixelsPerSecond, 0);
 
@@ -110,8 +105,6 @@ public class BeatmapRenderer : MonoBehaviour
         foreach (var go in toDestroy)
             Destroy(go);
     }
-
-    // ── Hit joueur ────────────────────────────────────────────────────────────
 
     public void OnPlayerHit(float hitThreshold)
     {

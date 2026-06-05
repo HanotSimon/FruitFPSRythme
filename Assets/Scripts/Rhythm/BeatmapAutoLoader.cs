@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class BeatmapAutoLoader : MonoBehaviour
 {
-    public BeatmapData beatmap;
-
     private void Awake()
     {
         LoadTxtIntoBeatmap();
@@ -12,13 +10,15 @@ public class BeatmapAutoLoader : MonoBehaviour
 
     void LoadTxtIntoBeatmap()
     {
+        var beatmap = RhythmManager.Instance.beatmap;
+
         if (beatmap == null)
         {
             Debug.LogError("No Beatmap assigned");
             return;
         }
 
-        string path = Application.dataPath + "/Beatmaps/" + beatmap.name + ".txt";
+        string path = Application.dataPath + "/ScriptableObjects/Beatmaps/" + beatmap.name + ".txt";
 
         if (!File.Exists(path))
         {

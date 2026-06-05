@@ -24,13 +24,14 @@ public class RhythmManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        audioSource = GetComponent<AudioSource>();
     }
 
-    private void Start()
+    public void LoadLevel(LevelData level)
     {
-        audioSource = GetComponent<AudioSource>();
+        beatmap = level.beatmap;
 
-        audioSource.clip = beatmap.musicClip;
+        audioSource.clip = level.beatmap.musicClip;
 
         songStartDSPTime = AudioSettings.dspTime + timeBeforeStart;
 
