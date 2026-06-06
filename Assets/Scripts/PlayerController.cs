@@ -9,7 +9,6 @@ public class PlayerController : MonoBehaviour
     public float jumpForce = 5f;
     public float gravity = -9.81f;
 
-    public float dashForce = 10f;
     public float dashCooldown = 1f;
 
     private CharacterController controller;
@@ -18,6 +17,13 @@ public class PlayerController : MonoBehaviour
     private float lastDashTime;
 
     [SerializeField] private WeaponSystem weapon;
+
+    private bool isDashing;
+    private Vector3 dashDirection;
+    private float dashTimer;
+
+    [SerializeField] private float dashDuration = 0.15f;
+    [SerializeField] private float dashSpeed = 25f;
 
     void Start()
     {
@@ -32,11 +38,13 @@ public class PlayerController : MonoBehaviour
         Move();
         Gravity();
 
-        Dash();
+        DashMovement();
+
         if (Input.GetMouseButtonDown(0))
         {
             weapon.Shoot();
         }
+
         Finisher();
     }
 
@@ -83,14 +91,35 @@ public class PlayerController : MonoBehaviour
 
     void Dash()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift) && Time.time > lastDashTime + dashCooldown)
+        if (Input.GetKeyDown(KeyCode.LeftShift)
+            && Time.time > lastDashTime + dashCooldown
+            && !isDashing)
         {
             bool success = RhythmManager.Instance.TryHit(BeatAction.Dash);
 
-            //faire si perfect, good ou miss
+            dashDirection = transform.forward;
+            isDashing = true;
+            dashTimer = dashDuration;
 
-            controller.Move(transform.forward * dashForce * Time.deltaTime);
             lastDashTime = Time.time;
+
+            // TODO: perfect / good / miss feedback
+        }
+    }
+
+    void DashMovement()
+    {
+        Dash();
+
+        if (isDashing)
+        {
+            controller.Move(dashDirection * dashSpeed * Time.deltaTime);
+
+            dashTimer -= Time.deltaTime;
+            if (dashTimer <= 0f)
+            {
+                isDashing = false;
+            }
         }
     }
 
@@ -100,8 +129,7 @@ public class PlayerController : MonoBehaviour
         {
             bool success = RhythmManager.Instance.TryHit(BeatAction.Finisher);
 
-            //faire si perfect, good ou miss
-            //faire logique Finisher (ex: AOE autour du joueur, dégâts multipliés, etc.)
+            // logique Finisher
         }
     }
 }

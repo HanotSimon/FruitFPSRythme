@@ -673,7 +673,6 @@ GameObject:
   - component: {fileID: 555411955}
   - component: {fileID: 555411954}
   - component: {fileID: 555411956}
-  - component: {fileID: 555411957}
   m_Layer: 0
   m_Name: RhythmManager
   m_TagString: Untagged
@@ -812,18 +811,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &555411957
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 555411953}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 864ddb7c989c06c53ad9f61f3ff763ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BeatmapAutoLoader
 --- !u!1 &592144102
 GameObject:
   m_ObjectHideFlags: 0
@@ -1022,9 +1009,10 @@ MonoBehaviour:
   cameraTransform: {fileID: 330585546}
   jumpForce: 1
   gravity: -9.81
-  dashForce: 150
   dashCooldown: 1
   weapon: {fileID: 1336073503}
+  dashDuration: 0.25
+  dashSpeed: 30
 --- !u!143 &710781003
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1097,7 +1085,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aad0f36e9518a1d28839aebd6127bee9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BeatmapRenderer
-  beatPrefab: {fileID: 4247342042127049467, guid: be291a33cb799512ea2a2b82039ba067, type: 3}
+  beatShootPrefab: {fileID: 4247342042127049467, guid: be291a33cb799512ea2a2b82039ba067, type: 3}
+  beatDashPrefab: {fileID: 4247342042127049467, guid: 1b22211f879945943b5d02ef789d026a, type: 3}
+  beatFinisherPrefab: {fileID: 4247342042127049467, guid: 1a81b49e3176ade4793c981b095bf4a7, type: 3}
   container: {fileID: 1424834896}
   hitLine: {fileID: 1660304975}
   pixelsPerSecond: 400

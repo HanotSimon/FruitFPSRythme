@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using UnityEngine;
 
 public class RhythmManager : MonoBehaviour
@@ -30,6 +31,8 @@ public class RhythmManager : MonoBehaviour
     public void LoadLevel(LevelData level)
     {
         beatmap = level.beatmap;
+
+        LoadTxtIntoBeatmap();
 
         audioSource.clip = level.beatmap.musicClip;
 
@@ -97,5 +100,30 @@ public class RhythmManager : MonoBehaviour
 
         nextBeatIndex++;
         return true;
+    }
+
+    void LoadTxtIntoBeatmap()
+    {
+        if (beatmap == null)
+        {
+            Debug.LogError("No Beatmap assigned");
+            return;
+        }
+
+        Debug.Log("Loading beatmap: " + beatmap.name);
+
+        string path = Application.dataPath +
+            "/ScriptableObjects/Beatmaps/" +
+            beatmap.name + ".txt";
+
+        if (!File.Exists(path))
+        {
+            Debug.LogError("TXT not found: " + path);
+            return;
+        }
+
+        beatmap.beatEvents = BeatmapImporter.ImportLabels(path);
+
+        Debug.Log("Beatmap loaded: " + beatmap.beatEvents.Count + " beats");
     }
 }

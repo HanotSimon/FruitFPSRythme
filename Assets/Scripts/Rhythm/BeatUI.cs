@@ -7,7 +7,7 @@ public class BeatUI : MonoBehaviour
     public BeatAction action;
     public int beatIndex;
 
-    [HideInInspector] public float startX;
+    public bool fromLeft;
 
     public static HashSet<int> hitBeats = new HashSet<int>();
 

@@ -4,7 +4,10 @@ using System.Collections.Generic;
 
 public class BeatmapRenderer : MonoBehaviour
 {
-    public GameObject beatPrefab;
+    public GameObject beatShootPrefab;
+    public GameObject beatDashPrefab;
+    public GameObject beatFinisherPrefab;
+
     public RectTransform container;
     public RectTransform hitLine;
     public float pixelsPerSecond = 400f;
@@ -53,31 +56,39 @@ public class BeatmapRenderer : MonoBehaviour
 
     void CreateBeatPair(BeatEvent beat, int index)
     {
-        CreateBeatUI(beat, -800f, index);
-        CreateBeatUI(beat, +800f, index);
+        CreateBeatUI(beat, true, index);
+        CreateBeatUI(beat, false, index);
     }
 
-    void CreateBeatUI(BeatEvent beat, float startX, int index)
+    void CreateBeatUI(BeatEvent beat, bool fromLeft, int index)
     {
-        GameObject obj = Instantiate(beatPrefab, container);
+        GameObject obj = beat.action switch
+        {
+            BeatAction.Shoot => Instantiate(beatShootPrefab, container),
+            BeatAction.Dash => Instantiate(beatDashPrefab, container),
+            BeatAction.Finisher => Instantiate(beatFinisherPrefab, container),
+            _ => Instantiate(beatShootPrefab, container)
+        };
+
         BeatUI ui = obj.GetComponent<BeatUI>();
         RectTransform rt = obj.GetComponent<RectTransform>();
 
-        ui.beatTime  = beat.time;
-        ui.action    = beat.action;
+        ui.beatTime = beat.time;
+        ui.action = beat.action;
         ui.beatIndex = index;
-        ui.startX    = startX;
+        ui.fromLeft = fromLeft;
 
-        rt.anchoredPosition = new Vector2(startX, 0);
+        rt.anchoredPosition = new Vector2(
+            fromLeft ? -spawnWindow * pixelsPerSecond
+                     : spawnWindow * pixelsPerSecond,
+            0
+        );
 
-        var img = obj.transform.Find("Image").GetComponent<UnityEngine.UI.Image>();
-        img.color = beat.action switch
-        {
-            BeatAction.Shoot    => Color.red,
-            BeatAction.Dash     => Color.cyan,
-            BeatAction.Finisher => Color.yellow,
-            _                   => Color.white
-        };
+        rt.localScale = new Vector3(
+            fromLeft ? 1 : -1,
+            1,
+            1
+        );
     }
 
     void MoveAndCleanBeats(double songTime)
@@ -92,7 +103,7 @@ public class BeatmapRenderer : MonoBehaviour
             RectTransform rt = child.GetComponent<RectTransform>();
             float timeToBeat = ui.beatTime - (float)songTime;
 
-            float direction = ui.startX < 0f ? 1f : -1f;
+            float direction = ui.fromLeft ? 1f : -1f;
             rt.anchoredPosition = new Vector2(direction * timeToBeat * pixelsPerSecond, 0);
 
             bool atCenter = Mathf.Abs(timeToBeat) < 0.05f;
