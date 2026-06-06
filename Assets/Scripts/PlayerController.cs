@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     private float lastDashTime;
 
     [SerializeField] private WeaponSystem weapon;
+    [SerializeField] private LayerMask fruitLayer;
 
     private bool isDashing;
     private Vector3 dashDirection;
@@ -25,6 +26,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float dashDuration = 0.15f;
     [SerializeField] private float dashSpeed = 25f;
 
+    private bool isFinishing;
+    private Vector3 finishDirection;
+    private float finishTimer;
+
+    [SerializeField] private float finishSpeed = 40f;
+    [SerializeField] private float finishDuration = 0.2f;
+    [SerializeField] private float finishRange = 100f;
     void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -38,7 +46,9 @@ public class PlayerController : MonoBehaviour
         Move();
         Gravity();
 
+        Dash();
         DashMovement();
+        FinisherMovement();
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -95,7 +105,10 @@ public class PlayerController : MonoBehaviour
             && Time.time > lastDashTime + dashCooldown
             && !isDashing)
         {
-            bool success = RhythmManager.Instance.TryHit(BeatAction.Dash);
+            BeatResult beatResult = RhythmManager.Instance.TryHit(BeatAction.Dash);
+
+            if (beatResult == BeatResult.Miss)
+                return;
 
             dashDirection = transform.forward;
             isDashing = true;
@@ -103,33 +116,60 @@ public class PlayerController : MonoBehaviour
 
             lastDashTime = Time.time;
 
-            // TODO: perfect / good / miss feedback
+            // TODO: feedback (perfect/good)
         }
     }
 
     void DashMovement()
     {
-        Dash();
+        if (!isDashing)
+            return;
 
-        if (isDashing)
+        controller.Move(dashDirection * dashSpeed * Time.deltaTime);
+
+        dashTimer -= Time.deltaTime;
+
+        if (dashTimer <= 0f)
         {
-            controller.Move(dashDirection * dashSpeed * Time.deltaTime);
-
-            dashTimer -= Time.deltaTime;
-            if (dashTimer <= 0f)
-            {
-                isDashing = false;
-            }
+            isDashing = false;
         }
     }
 
     void Finisher()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) && !isFinishing)
         {
-            bool success = RhythmManager.Instance.TryHit(BeatAction.Finisher);
+            BeatResult beatResult = RhythmManager.Instance.TryHit(BeatAction.Finisher);
 
-            // logique Finisher
+            if (beatResult == BeatResult.Miss)
+                return;
+
+            Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+
+            if (Physics.Raycast(ray, out RaycastHit hit, finishRange, fruitLayer))
+            {
+                finishDirection = (hit.transform.position - transform.position).normalized;
+
+                isFinishing = true;
+                finishTimer = finishDuration;
+
+                Destroy(hit.collider.gameObject);
+            }
+        }
+    }
+
+    void FinisherMovement()
+    {
+        if (!isFinishing)
+            return;
+
+        controller.Move(finishDirection * finishSpeed * Time.deltaTime);
+
+        finishTimer -= Time.deltaTime;
+
+        if (finishTimer <= 0f)
+        {
+            isFinishing = false;
         }
     }
 }

@@ -71,18 +71,18 @@ public class RhythmManager : MonoBehaviour
         return AudioSettings.dspTime - songStartDSPTime + beatmap.musicOffset;
     }
 
-    public bool TryHit(BeatAction action)
+    public BeatResult TryHit(BeatAction action)
     {
         if (beatmap == null || beatmap.beatEvents == null)
-            return false;
+            return BeatResult.Miss;
 
         if (nextBeatIndex >= beatmap.beatEvents.Count)
-            return false;
+            return BeatResult.Miss;
 
         BeatEvent beat = beatmap.beatEvents[nextBeatIndex];
 
         if (beat.action != action)
-            return false;
+            return BeatResult.Miss;
 
         double currentTime = GetSongTime();
         float diff = Mathf.Abs((float)(beat.time - currentTime));
@@ -90,16 +90,19 @@ public class RhythmManager : MonoBehaviour
         if (diff > beatmap.goodWindow)
         {
             Debug.Log("❌ MISS");
-            return false;
+            return BeatResult.Miss;
         }
 
         if (diff <= beatmap.perfectWindow)
+        {
             Debug.Log("💥 PERFECT");
-        else
-            Debug.Log("👍 GOOD");
+            nextBeatIndex++;
+            return BeatResult.Perfect;
+        }
 
+        Debug.Log("👍 GOOD");
         nextBeatIndex++;
-        return true;
+        return BeatResult.Good;
     }
 
     void LoadTxtIntoBeatmap()
@@ -126,4 +129,11 @@ public class RhythmManager : MonoBehaviour
 
         Debug.Log("Beatmap loaded: " + beatmap.beatEvents.Count + " beats");
     }
+}
+
+public enum BeatResult
+{
+    Miss,
+    Good,
+    Perfect
 }

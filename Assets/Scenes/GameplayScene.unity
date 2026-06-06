@@ -132,6 +132,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 330585548}
     - target: {fileID: 2666173467447461482, guid: 34d9918439c82da478947f5832aed8b9, type: 3}
+      propertyPath: crosshair
+      value: 
+      objectReference: {fileID: 706712726}
+    - target: {fileID: 2666173467447461482, guid: 34d9918439c82da478947f5832aed8b9, type: 3}
       propertyPath: failSound
       value: 
       objectReference: {fileID: 8300000, guid: 02c2f015ad506b11da096f9586f936d6, type: 3}
@@ -147,6 +151,18 @@ PrefabInstance:
       propertyPath: playerCamera
       value: 
       objectReference: {fileID: 330585545}
+    - target: {fileID: 2666173467447461482, guid: 34d9918439c82da478947f5832aed8b9, type: 3}
+      propertyPath: targetColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2666173467447461482, guid: 34d9918439c82da478947f5832aed8b9, type: 3}
+      propertyPath: targetColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2666173467447461482, guid: 34d9918439c82da478947f5832aed8b9, type: 3}
+      propertyPath: targetColor.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3557320247793090291, guid: 34d9918439c82da478947f5832aed8b9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.363
@@ -1011,8 +1027,14 @@ MonoBehaviour:
   gravity: -9.81
   dashCooldown: 1
   weapon: {fileID: 1336073503}
+  fruitLayer:
+    serializedVersion: 2
+    m_Bits: 64
   dashDuration: 0.25
   dashSpeed: 30
+  finishSpeed: 40
+  finishDuration: 0.5
+  finishRange: 100
 --- !u!143 &710781003
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1297,7 +1319,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 20, y: 100}
+  m_SizeDelta: {x: 1, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1660304976
 MonoBehaviour:

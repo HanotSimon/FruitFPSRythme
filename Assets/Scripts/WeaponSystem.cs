@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class WeaponSystem : MonoBehaviour
@@ -13,11 +14,20 @@ public class WeaponSystem : MonoBehaviour
     [SerializeField] private AudioClip failSound;
     [SerializeField] private AudioSource audioSource;
 
+    [SerializeField] private Image crosshair;
+    [SerializeField] private Color normalColor = Color.white;
+    [SerializeField] private Color targetColor = Color.red;
+
+    void Update()
+    {
+        UpdateCrosshair();
+    }
+
     public void Shoot()
     {
         audioSource.PlayOneShot(failSound);
-        
-        bool rhythmSuccess = RhythmManager.Instance.TryHit(BeatAction.Shoot);
+
+        BeatResult beatResult = RhythmManager.Instance.TryHit(BeatAction.Shoot);
 
         Ray ray = playerCamera.ViewportPointToRay(
             new Vector3(0.5f, 0.5f, 0f)
@@ -33,7 +43,7 @@ public class WeaponSystem : MonoBehaviour
 
             Destroy(effect, 1f);
 
-            if (rhythmSuccess)
+            if (beatResult != BeatResult.Miss)
             {
                 audioSource.PlayOneShot(killSound);
             }
@@ -43,6 +53,22 @@ public class WeaponSystem : MonoBehaviour
         else
         {
             StartCoroutine(camShake.Shake(0.1f, 0.05f));
+        }
+    }
+
+    void UpdateCrosshair()
+    {
+        Ray ray = playerCamera.ViewportPointToRay(
+            new Vector3(0.5f, 0.5f, 0f)
+        );
+
+        if (Physics.Raycast(ray, out RaycastHit hit, range, fruitLayer))
+        {
+            crosshair.color = targetColor;
+        }
+        else
+        {
+            crosshair.color = normalColor;
         }
     }
 }
