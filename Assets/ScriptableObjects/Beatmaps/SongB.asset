@@ -18,183 +18,126 @@ MonoBehaviour:
   perfectWindow: 0.5
   goodWindow: 0.75
   beatEvents:
-  - time: 0.5
+  - time: 0.454974
     action: 0
     hit: 0
-  - time: 1
+  - time: 1.199107
     action: 0
     hit: 0
-  - time: 1.5
+  - time: 1.843429
     action: 0
     hit: 0
-  - time: 2
-    action: 1
-    hit: 0
-  - time: 2.5
+  - time: 2.501594
     action: 0
     hit: 0
-  - time: 3
+  - time: 3.212395
     action: 0
     hit: 0
-  - time: 3.5
+  - time: 3.843943
+    action: 0
+    hit: 0
+  - time: 5.800053
     action: 2
     hit: 0
-  - time: 4
+  - time: 6.455386
     action: 0
     hit: 0
-  - time: 4.5
+  - time: 7.752061
+    action: 0
+    hit: 0
+  - time: 9.060396
+    action: 0
+    hit: 0
+  - time: 9.729722
+    action: 0
+    hit: 0
+  - time: 11.028729
+    action: 0
+    hit: 0
+  - time: 11.672402
+    action: 0
+    hit: 0
+  - time: 12.99473
+    action: 0
+    hit: 0
+  - time: 14.310061
     action: 1
     hit: 0
-  - time: 5
+  - time: 14.508294
     action: 0
     hit: 0
-  - time: 5.5
+  - time: 14.792816
+    action: 1
+    hit: 0
+  - time: 14.963063
     action: 0
     hit: 0
-  - time: 6
+  - time: 15.275571
+    action: 1
+    hit: 0
+  - time: 15.485464
+    action: 0
+    hit: 0
+  - time: 15.758326
+    action: 1
+    hit: 0
+  - time: 15.928572
+    action: 0
+    hit: 0
+  - time: 16.22009
     action: 2
     hit: 0
-  - time: 6.5
+  - time: 16.856768
     action: 0
     hit: 0
-  - time: 7
+  - time: 17.53309
+    action: 0
+    hit: 0
+  - time: 18.181429
+    action: 0
+    hit: 0
+  - time: 18.841425
+    action: 0
+    hit: 0
+  - time: 19.48743
+    action: 0
+    hit: 0
+  - time: 21.43944
+    action: 0
+    hit: 0
+  - time: 22.122759
+    action: 0
+    hit: 0
+  - time: 22.813074
+    action: 0
+    hit: 0
+  - time: 23.407557
+    action: 0
+    hit: 0
+  - time: 24.7277
+    action: 0
+    hit: 0
+  - time: 25.060509
     action: 1
     hit: 0
-  - time: 7.5
+  - time: 25.2634
     action: 0
     hit: 0
-  - time: 8
+  - time: 25.54704
+    action: 1
+    hit: 0
+  - time: 25.754824
     action: 0
     hit: 0
-  - time: 8.5
+  - time: 26.018677
+    action: 1
+    hit: 0
+  - time: 26.226934
+    action: 0
+    hit: 0
+  - time: 26.461103
+    action: 1
+    hit: 0
+  - time: 26.672186
     action: 2
-    hit: 0
-  - time: 9
-    action: 0
-    hit: 0
-  - time: 9.5
-    action: 1
-    hit: 0
-  - time: 10
-    action: 0
-    hit: 0
-  - time: 10.5
-    action: 0
-    hit: 0
-  - time: 11
-    action: 2
-    hit: 0
-  - time: 11.5
-    action: 0
-    hit: 0
-  - time: 12
-    action: 1
-    hit: 0
-  - time: 12.5
-    action: 0
-    hit: 0
-  - time: 13
-    action: 0
-    hit: 0
-  - time: 13.5
-    action: 2
-    hit: 0
-  - time: 14
-    action: 0
-    hit: 0
-  - time: 14.5
-    action: 1
-    hit: 0
-  - time: 15
-    action: 0
-    hit: 0
-  - time: 15.5
-    action: 0
-    hit: 0
-  - time: 16
-    action: 2
-    hit: 0
-  - time: 16.5
-    action: 0
-    hit: 0
-  - time: 17
-    action: 1
-    hit: 0
-  - time: 17.5
-    action: 0
-    hit: 0
-  - time: 18
-    action: 0
-    hit: 0
-  - time: 18.5
-    action: 2
-    hit: 0
-  - time: 19
-    action: 0
-    hit: 0
-  - time: 19.5
-    action: 1
-    hit: 0
-  - time: 20
-    action: 0
-    hit: 0
-  - time: 20.5
-    action: 0
-    hit: 0
-  - time: 21
-    action: 2
-    hit: 0
-  - time: 21.5
-    action: 0
-    hit: 0
-  - time: 22
-    action: 1
-    hit: 0
-  - time: 22.5
-    action: 0
-    hit: 0
-  - time: 23
-    action: 0
-    hit: 0
-  - time: 23.5
-    action: 2
-    hit: 0
-  - time: 24
-    action: 0
-    hit: 0
-  - time: 24.5
-    action: 1
-    hit: 0
-  - time: 25
-    action: 0
-    hit: 0
-  - time: 25.5
-    action: 0
-    hit: 0
-  - time: 26
-    action: 2
-    hit: 0
-  - time: 26.5
-    action: 0
-    hit: 0
-  - time: 27
-    action: 1
-    hit: 0
-  - time: 27.5
-    action: 0
-    hit: 0
-  - time: 28
-    action: 0
-    hit: 0
-  - time: 28.5
-    action: 2
-    hit: 0
-  - time: 29
-    action: 0
-    hit: 0
-  - time: 29.5
-    action: 1
-    hit: 0
-  - time: 30
-    action: 0
     hit: 0

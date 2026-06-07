@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using UnityEngine;
+using System.Collections;
 
 public class RhythmManager : MonoBehaviour
 {
@@ -19,8 +20,10 @@ public class RhythmManager : MonoBehaviour
     private int nextBeatIndex;
 
     public BeatEvent currentBeat;
-    
+
     public bool beatActive;
+
+    private double gameplayStartTime;
 
     private void Awake()
     {
@@ -39,6 +42,8 @@ public class RhythmManager : MonoBehaviour
         songStartDSPTime = AudioSettings.dspTime + timeBeforeStart;
 
         audioSource.PlayScheduled(songStartDSPTime);
+
+        StartCoroutine(StartAudioWithOffset());
     }
 
     private void Update()
@@ -71,6 +76,13 @@ public class RhythmManager : MonoBehaviour
         return AudioSettings.dspTime - songStartDSPTime + beatmap.musicOffset;
     }
 
+    private IEnumerator StartAudioWithOffset()
+    {
+        yield return new WaitUntil(() => AudioSettings.dspTime >= songStartDSPTime);
+
+        audioSource.time = (float)beatmap.musicOffset;
+    }
+
     public BeatResult TryHit(BeatAction action)
     {
         if (beatmap == null || beatmap.beatEvents == null)
@@ -89,18 +101,20 @@ public class RhythmManager : MonoBehaviour
 
         if (diff > beatmap.goodWindow)
         {
-            Debug.Log("❌ MISS");
+            UIFeedback.Instance.ShowFeedback(BeatResult.Miss);
             return BeatResult.Miss;
         }
 
         if (diff <= beatmap.perfectWindow)
         {
-            Debug.Log("💥 PERFECT");
+            UIFeedback.Instance.ShowFeedback(BeatResult.Perfect);
             nextBeatIndex++;
+            ScoreManager.Instance.AddScore(100);
             return BeatResult.Perfect;
         }
 
-        Debug.Log("👍 GOOD");
+        UIFeedback.Instance.ShowFeedback(BeatResult.Good);
+        ScoreManager.Instance.AddScore(50);
         nextBeatIndex++;
         return BeatResult.Good;
     }
