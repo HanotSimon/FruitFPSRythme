@@ -1,8 +1,11 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class BeatmapRenderer : MonoBehaviour
 {
+    public static BeatmapRenderer Instance;
+
     public GameObject beatShootPrefab;
     public GameObject beatDashPrefab;
     public GameObject beatFinisherPrefab;
@@ -11,15 +14,17 @@ public class BeatmapRenderer : MonoBehaviour
     public RectTransform hitLine;
     public float pixelsPerSecond = 400f;
 
-    [Tooltip("Combien de secondes avant le beat on spawne le visuel")]
     public float spawnWindow = 2f;
+
+    public Image goodWindowIndicator;
+    public Image perfectWindowIndicator;
 
     private int nextSpawnIndex = 0;
     private List<GameObject> toDestroy = new List<GameObject>();
 
-    private void Start()
+    private void Awake()
     {
-        BeatUI.hitBeats.Clear();
+        Instance = this;
     }
 
     private void Update()
@@ -119,25 +124,35 @@ public class BeatmapRenderer : MonoBehaviour
     public void OnPlayerHit(float hitThreshold)
     {
         double songTime = RhythmManager.Instance.GetSongTime();
+        int targetIndex = RhythmManager.Instance.nextBeatIndex;
         toDestroy.Clear();
 
         foreach (Transform child in container)
         {
             BeatUI ui = child.GetComponent<BeatUI>();
             if (ui == null) continue;
-
-            float timeToBeat = ui.beatTime - (float)songTime;
-
-            if (Mathf.Abs(timeToBeat) < hitThreshold
-                && !BeatUI.hitBeats.Contains(ui.beatIndex)
-                && ui.TryMarkDestroyed())
-            {
-                BeatUI.hitBeats.Add(ui.beatIndex);
+            if (ui.beatIndex == targetIndex && ui.TryMarkDestroyed())
                 toDestroy.Add(child.gameObject);
-            }
         }
 
         foreach (var go in toDestroy)
             Destroy(go);
+    }
+
+    public void UpdateWindowIndicators()
+    {
+        var beatmap = RhythmManager.Instance.beatmap;
+        if (beatmap == null) return;
+
+        float goodWidth = (float)beatmap.goodWindow * pixelsPerSecond * 2f;
+        float perfectWidth = (float)beatmap.perfectWindow * pixelsPerSecond * 2f;
+
+        if (goodWindowIndicator)
+            goodWindowIndicator.rectTransform.sizeDelta =
+                new Vector2(goodWidth, goodWindowIndicator.rectTransform.sizeDelta.y);
+
+        if (perfectWindowIndicator)
+            perfectWindowIndicator.rectTransform.sizeDelta =
+                new Vector2(perfectWidth, perfectWindowIndicator.rectTransform.sizeDelta.y);
     }
 }

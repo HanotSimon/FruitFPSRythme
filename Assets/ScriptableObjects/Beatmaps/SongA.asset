@@ -15,8 +15,8 @@ MonoBehaviour:
   musicClip: {fileID: 8300000, guid: da54290e1b653ce9cb064055aafabfc2, type: 3}
   bpm: 120
   musicOffset: 0
-  perfectWindow: 0.25
-  goodWindow: 0.5
+  perfectWindow: 0.15
+  goodWindow: 0.25
   beatEvents:
   - time: 0.215224
     action: 0

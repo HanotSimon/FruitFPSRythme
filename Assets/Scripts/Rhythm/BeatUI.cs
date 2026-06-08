@@ -9,8 +9,6 @@ public class BeatUI : MonoBehaviour
 
     public bool fromLeft;
 
-    public static HashSet<int> hitBeats = new HashSet<int>();
-
     private bool isDestroyed = false;
 
     public bool TryMarkDestroyed()

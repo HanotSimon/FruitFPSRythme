@@ -17,7 +17,7 @@ public class RhythmManager : MonoBehaviour
 
     public Action<BeatEvent> OnBeatReached;
 
-    private int nextBeatIndex;
+    public int nextBeatIndex;
 
     public BeatEvent currentBeat;
 
@@ -44,6 +44,8 @@ public class RhythmManager : MonoBehaviour
         audioSource.PlayScheduled(songStartDSPTime);
 
         StartCoroutine(StartAudioWithOffset());
+
+        BeatmapRenderer.Instance.UpdateWindowIndicators();
     }
 
     private void Update()
@@ -108,12 +110,14 @@ public class RhythmManager : MonoBehaviour
         if (diff <= beatmap.perfectWindow)
         {
             UIFeedback.Instance.ShowFeedback(BeatResult.Perfect);
-            nextBeatIndex++;
+            BeatmapRenderer.Instance.OnPlayerHit((float)beatmap.goodWindow);
             ScoreManager.Instance.AddScore(100);
+            nextBeatIndex++;
             return BeatResult.Perfect;
         }
 
         UIFeedback.Instance.ShowFeedback(BeatResult.Good);
+        BeatmapRenderer.Instance.OnPlayerHit((float)beatmap.goodWindow);
         ScoreManager.Instance.AddScore(50);
         nextBeatIndex++;
         return BeatResult.Good;
