@@ -30,9 +30,13 @@ public class PlayerController : MonoBehaviour
     private Vector3 finishDirection;
     private float finishTimer;
 
+    private Vector3 boostVelocity;
+    private float boostDuration;
+
     [SerializeField] private float finishSpeed = 40f;
     [SerializeField] private float finishDuration = 0.2f;
     [SerializeField] private float finishRange = 100f;
+
     void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -50,12 +54,36 @@ public class PlayerController : MonoBehaviour
         DashMovement();
         FinisherMovement();
 
+        ApplyBoost();
+
         if (Input.GetMouseButtonDown(0))
         {
             weapon.Shoot();
         }
 
         Finisher();
+    }
+
+    public void Launch(float force)
+    {
+        velocity.y = force;
+    }
+
+    public void LaunchHorizontal(Vector3 direction, float force, float duration)
+    {
+        boostVelocity = direction * force;
+        boostDuration = duration;
+    }
+
+    void ApplyBoost()
+    {
+        if (boostVelocity == Vector3.zero) return;
+
+        controller.Move(boostVelocity * Time.deltaTime);
+        boostVelocity = Vector3.Lerp(boostVelocity, Vector3.zero, boostDuration * Time.deltaTime);
+
+        if (boostVelocity.magnitude < 0.1f)
+            boostVelocity = Vector3.zero;
     }
 
     void Move()

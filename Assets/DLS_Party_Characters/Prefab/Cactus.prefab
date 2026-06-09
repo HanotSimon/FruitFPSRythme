@@ -234,6 +234,7 @@ GameObject:
   - component: {fileID: 3335305921226898023}
   - component: {fileID: 860744768460029294}
   - component: {fileID: 6966917696148098176}
+  - component: {fileID: 1771252682005846286}
   m_Layer: 6
   m_Name: Cactus
   m_TagString: Untagged
@@ -319,6 +320,33 @@ MonoBehaviour:
   frequency: 0.05
   enableRotation: 1
   rotationSpeed: 150
+--- !u!54 &1771252682005846286
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2488250621132503442}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!1 &2760164588845936222
 GameObject:
   m_ObjectHideFlags: 0

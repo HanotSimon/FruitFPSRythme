@@ -659,6 +659,7 @@ GameObject:
   - component: {fileID: 6271096243748920317}
   - component: {fileID: 7945991139752455490}
   - component: {fileID: 6666740059315962948}
+  - component: {fileID: -8091076430058751609}
   m_Layer: 6
   m_Name: Banana
   m_TagString: Untagged
@@ -744,6 +745,33 @@ MonoBehaviour:
   frequency: 0.06
   enableRotation: 1
   rotationSpeed: 400
+--- !u!54 &-8091076430058751609
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6612974337440326847}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &6614403156983418879
 GameObject:
   m_ObjectHideFlags: 0
